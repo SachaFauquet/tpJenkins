@@ -10,6 +10,7 @@ pipeline {
 
         stage('Build') {
             steps {
+                sh 'chmod +x gradlew'
                 sh './gradlew clean build'
             }
         }
@@ -23,7 +24,7 @@ pipeline {
 
     post {
         always {
-            junit '**/build/test-results/test/*.xml'
+            junit allowEmptyResults: true, testResults: '**/build/test-results/test/*.xml'
         }
     }
 }
