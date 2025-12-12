@@ -16,6 +16,9 @@ pipeline {
         }
 
         stage('Test') {
+            when {
+                branch 'test'
+            }
             steps {
                 sh './gradlew test'
             }
@@ -24,7 +27,11 @@ pipeline {
 
     post {
         always {
-            junit allowEmptyResults: true, testResults: '**/build/test-results/test/*.xml'
+            script {
+                if (env.BRANCH_NAME == 'test') {
+                    junit allowEmptyResults: true, testResults: '**/build/test-results/test/*.xml'
+                }
+            }
         }
     }
 }
